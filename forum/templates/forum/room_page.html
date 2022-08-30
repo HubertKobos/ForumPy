@@ -1,0 +1,48 @@
+{% extends "header.html" %}
+
+{% block content %}
+<section class="text-gray-600 body-font overflow-hidden">
+  <div class="py-8 flex flex-wrap md:flex-nowrap">
+  </div>
+    <div class="container px-5 py-24 mx-auto">
+      <div class="-my-8 divide-y-2 divide-gray-100">
+        <div class="py-8 flex flex-wrap md:flex-nowrap">
+          <div class="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
+            <span class="mt-1 text-gray-500 text-sm">{{room_info.created_at}}</span>
+          </div>
+          <div class="md:flex-grow">
+            <h2 class="text-2xl font-medium text-gray-900 title-font mb-2">{{room_info.topic}}</h2>
+            <p class="leading-relaxed">{{room_info.description}}</p>
+              <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              </svg>
+            </a>
+          </div>
+        </div>
+        {% for answer in answers %}
+          <div class="py-8 flex flex-wrap md:flex-nowrap">
+            <div class="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
+              <span class="mt-1 text-gray-500 text-sm">12 Aug 2022</span>
+            </div>
+            <div class="md:flex-grow">
+              <h2 class="text-2xl font-medium text-gray-900 title-font mb-2">{{answer.author}}</h2>
+              <p class="leading-relaxed">{{answer.answer}}</p>
+                <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                </svg>
+                {% if request.user == answer.author %}
+                  <a href="{% url 'forum:delete_message' answer.id %}">Delete your message</a>
+                {% endif %}
+              </a>
+            </div>
+          </div>
+          {% endfor %}
+      </div>
+      <form method="post">
+          <h1 class="text-2xl font-medium text-gray-900 title-font mb-2">Answer the question</h1>
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit">Post</button>
+      </form>
+    </div>
+  </section>
+
+{% endblock content%}

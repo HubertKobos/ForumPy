@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('chat/', include('chat.urls')),
+    path('chat/', include('chat.urls', 'chat')),
+    path('forum/', include('forum.urls', namespace='forum')),
     path("admin/", admin.site.urls),
 ]

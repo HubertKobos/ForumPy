@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'channels',
+    'forum',
     'chat',
     "django.contrib.admin",
     "django.contrib.auth",
@@ -132,3 +133,8 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+AUTH_USER_MODEL = "forum.User"
+
+# redirect URL for LoginView
+LOGIN_REDIRECT_URL = "/forum"

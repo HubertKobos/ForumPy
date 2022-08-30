@@ -1,0 +1,10 @@
+{% extends "header.html" %}
+
+{% block content %}
+    <h1>Are you sure you want to delete this message ?</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">Submit</button>
+    </form>
+{% endblock content %}
