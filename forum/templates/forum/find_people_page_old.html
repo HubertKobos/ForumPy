@@ -1,0 +1,34 @@
+{% extends 'header.html' %}
+
+{% block content %}
+<div class="all_users_div">
+    <h1>List of all users </h1>
+    <ul class='all_users'>
+        {% for user in all_users %}
+            {% if not user.is_superuser %}
+                {% comment %} {% if user not in request.user.firends.all and user == request.user %} {% endcomment %}
+                    <h1>{{user}}
+                        <a href="{% url 'forum:send_friend_request' user.id %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ">
+                            Send friend request
+                        </a>
+                    </h1>
+                    {% comment %} <h1>{{user}} <a href="{% url 'forum:send_friend_request' user.id %}">send friend request</a<></h1> {% endcomment %}
+                {% comment %} {% endif %} {% endcomment %}
+            {% endif %}
+        {% endfor %}
+    </ul>
+</br>
+    <div class="friend_requests">
+        {% for friend_request in all_friend_requests %}
+        <h1>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                Button
+            </button>
+            {{friend_request.from_user}}
+            <a href="{% url 'forum:accept_friend_request' friend_request.id %}">accept friend request </a>
+        </h1>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}
