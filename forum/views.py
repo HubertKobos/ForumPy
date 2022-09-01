@@ -1,9 +1,9 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, DeleteView
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from .forms import AnswerModelForm, CustiomUserCreationForm
+from .forms import AnswerModelForm, CreateNewRoom, CustiomUserCreationForm
 from .models import Answer, Room, User, Friend_Request
 from django.shortcuts import render
 from django.urls import reverse
@@ -13,8 +13,28 @@ class HomePageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['latest_posts'] = Room.objects.all()[:6]
+        context['latest_posts'] = reversed(Room.objects.all()[6:])
         return context
+
+# create new room
+@login_required
+def create_new_question(request):
+    if request.method == 'POST':
+        form = CreateNewRoom(request.POST)
+        print("request.POST--->", form)
+        if form.is_valid():
+            print(form.cleaned_data)
+            Room.objects.create(
+                created_by = request.user,
+                topic = form.cleaned_data['topic'],
+                description = form.cleaned_data['description'],
+                category = form.cleaned_data['category']
+            )
+            return HttpResponseRedirect('/forum')
+    else:
+        # on GET instance of form is created
+        form = CreateNewRoom()
+    return render(request, "forum/create_new_post_page.html", {'form': form})
 
 class FindPeopleView(TemplateView):
     template_name = "forum/find_people_page.html"

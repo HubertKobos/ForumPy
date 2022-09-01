@@ -1,0 +1,20 @@
+{% comment %} <form action="create_new_post/" method="post">
+    <label for="topic">Topic: </label>
+    <input id="topic" type="text" name="topic">
+    <label for="description">Description: </label>
+    <input id="description" type="text" name="description">
+    <label for="category">Category: </label>
+    <input id="category" type="text" name="category">
+    <input type="submit" value="OK">
+</form> {% endcomment %}
+
+{% extends "header.html" %}
+
+{% block content %}
+<form action="#" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form>
+
+{% endblock content %}
