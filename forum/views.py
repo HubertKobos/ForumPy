@@ -18,6 +18,8 @@ class HomePageView(TemplateView):
         first_posts = reversed(Room.objects.all())
         first_posts = list(first_posts)
         context['latest_posts'] = first_posts[:8]
+        friend_requests = Friend_Request.objects.filter(to_user=self.request.user)
+        context['friend_requests'] = friend_requests
         return context
 
 class MyProfileView(TemplateView):
