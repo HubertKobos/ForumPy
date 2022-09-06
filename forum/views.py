@@ -2,6 +2,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, DeleteView
 from django.contrib.auth import logout
+from django.shortcuts import resolve_url
+from django.contrib.auth.views import LogoutView
 from django.contrib.auth.decorators import login_required
 from .forms import AnswerModelForm, CreateNewRoom, CustiomUserCreationForm
 from .models import Answer, Room, User, Friend_Request
@@ -10,20 +12,37 @@ from django.urls import reverse
 
 class HomePageView(TemplateView):
     template_name = "forum/index.html"
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['latest_posts'] = reversed(Room.objects.all()[6:])
+        first_posts = reversed(Room.objects.all())
+        first_posts = list(first_posts)
+        context['latest_posts'] = first_posts[:8]
         return context
+
+class MyProfileView(TemplateView):
+    template_name = "forum/my_profile_page.html"
+
+    def get_context_data(self, **kwargs):
+        pk = self.kwargs['pk']
+        context = super().get_context_data(**kwargs)
+        context['user_information'] = User.objects.get(id=pk)
+        return context
+
+def logout_then_login(request):
+    """
+    Log out the user if they are logged in. Then redirect to the login page.
+    """
+    login_url='/forum/login'
+    return LogoutView.as_view(next_page=login_url)(request)
+
 
 # create new room
 @login_required
 def create_new_question(request):
     if request.method == 'POST':
         form = CreateNewRoom(request.POST)
-        print("request.POST--->", form)
         if form.is_valid():
-            print(form.cleaned_data)
             Room.objects.create(
                 created_by = request.user,
                 topic = form.cleaned_data['topic'],
@@ -54,8 +73,6 @@ class RoomPageView(CreateView):
         context = super().get_context_data(**kwargs)
         context['answers'] = Answer.objects.filter(room=pk) # use filter instead of get cause get only one object
         context['room_info'] = Room.objects.get(pk=pk)
-        print("context -->", context)
-        print("request -->", self.request)
         return context
 
     def form_valid(self, form):
@@ -117,4 +134,3 @@ def accept_friend_request(request, requestID):
 @login_required
 def logout_view(request):
     logout(request)
-    # return reverse('forum:logout')

@@ -5,8 +5,10 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     friends = models.ManyToManyField("User", blank=True)
+    short_about_me = models.CharField(max_length=20, blank=True, null=True)
     number_of_questions = models.IntegerField(default=0)
     number_of_answers = models.IntegerField(default=0)
+    description = models.CharField(max_length=1000, blank=True, null=True)
 
 class Friend_Request(models.Model):
     from_user = models.ForeignKey(User, related_name="from_user", on_delete=models.CASCADE)

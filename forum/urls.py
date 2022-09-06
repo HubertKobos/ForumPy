@@ -13,7 +13,8 @@ urlpatterns = [
     path('create_new_post/', views.create_new_question, name='create_post'),
     path('delete_message/<str:pk>', views.DeleteMessage.as_view(), name='delete_message'),
     path('find_people/', views.FindPeopleView.as_view(), name='find_people'),
+    path('my_profile/<int:pk>/', views.MyProfileView.as_view(),name='my_profile'),
     path('send_friend_request/<int:userID>/',views.send_friend_request, name='send_friend_request'),
     path('accept_friend_request/<int:requestId>/',views.accept_friend_request, name='accept_friend_request'),
-    path('logout/', LogoutView.as_view(), name='logout')
+    path('logout/', views.logout_then_login, name='logout')
 ]

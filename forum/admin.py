@@ -4,3 +4,4 @@ from . import models
 admin.site.register(models.User)
 admin.site.register(models.Room)
 admin.site.register(models.Answer)
+admin.site.register(models.Friend_Request)

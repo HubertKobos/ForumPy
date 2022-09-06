@@ -1,6 +1,6 @@
 from django import forms
 from .models import Answer, Room, User
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField
 
 class AnswerModelForm(forms.ModelForm):
     class Meta:
